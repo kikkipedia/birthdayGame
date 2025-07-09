@@ -1,54 +1,4 @@
-/* color palette from <https://github.com/vuejs/theme> */
-:root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
-
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-}
-
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
-
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
-}
 
 *,
 *::before,
@@ -60,8 +10,7 @@
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
+  background: #ffecb4;
   transition:
     color 0.5s,
     background-color 0.5s;
@@ -83,4 +32,63 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+body {
+  color: #4a2e1d;
+  margin: 0;
+  padding: 1rem;
+}
+
+.form-wrapper {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #f5d7a1;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(160, 82, 45, 0.2); /* soft sienna shadow */
+  border: 2px solid #a0522d;
+}
+
+h1, h2, h3 {
+  color: #5e3c2c;
+  margin-bottom: 1rem;
+}
+
+.seventies-input .v-field {
+  background-color: #fff8dc; /* cornsilk */
+  border-radius: 12px;
+  border: 2px solid #a0522d;
+  font-family: 'Courier', monospace;
+  color: #4a2e1d;
+}
+
+.seventies-button {
+  background-color: #ff8c00;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+  border-radius: 20px;
+  margin-top: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.seventies-button:hover {
+  background-color: #e67e22;
+  transform: scale(1.03);
+}
+
+.v-text-field input {
+  background-color: #fff8dc;
+  border-radius: 8px;
+}
+
+a {
+  color: #b4c26c;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
