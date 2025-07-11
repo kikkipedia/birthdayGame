@@ -12,6 +12,11 @@
         <Map/>
     </div>
 
+    <div class="score">
+      <h3>Dina poäng: {{  }}</h3>
+      <!--poängställning as dropdown-->
+    </div>
+
 </template>
 
 <script setup lang="ts">
@@ -46,5 +51,15 @@ const pointSystem = ref([
     width: 100%;
     position: relative;
     margin-top: 20px;
+    border: 4px solid #a0522d; /* sienna / retro brown */
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(94, 60, 44, 0.2);
+}
+
+.score {
+  text-align: left;
+  margin-top: 20px;
+  padding-left: 4px;
 }
 </style>

@@ -107,6 +107,7 @@ const setName = () => {
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 0px !important;
+  margin-top: 10px;;
 }
 .seventies-list-item {
   padding: 0.5rem;

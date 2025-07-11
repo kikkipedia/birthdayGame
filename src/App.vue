@@ -1,5 +1,5 @@
 <template>
-  <h1>Göstas triatlon</h1>
+  <h1>Göstaspelen</h1>
   <RouterView />
 </template>
 
@@ -7,32 +7,6 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { onMounted, ref } from 'vue'
 
-const userName = ref<string>('')
-const nameConfirmed = ref<boolean>(false)
-const items = ref([
-  { text: 'Öl 5p', icon: 'mdi-beer' },
-  { text: 'Vin 5p', icon: 'mdi-glass-wine' },
-  { text: 'Shot 15p', icon: 'mdi-cup' },
-  // { text: 'Gösta tycker om att simma', icon: 'mdi-swim' },
-  // { text: 'Gösta är bra på matte', icon: 'mdi-numeric-1-box-multiple-outline' }
-])
-
-onMounted(() => {
-  const storedName = localStorage.getItem('userName')
-  if (storedName) {
-    userName.value = storedName
-    nameConfirmed.value = true
-  }
-  else {
-    //userName.value = ''
-    nameConfirmed.value = false
-  }
-})
-
-const setName = () => {
-  localStorage.setItem('userName', userName.value)
-  nameConfirmed.value = true
-}
 </script>
 
 <style>

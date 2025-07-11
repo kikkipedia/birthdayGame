@@ -1,6 +1,7 @@
 <template>
     
     <div id="map"></div>
+    <div class="map-style-overlay"></div>
 </template>
 
 <script setup lang="ts">
@@ -8,36 +9,33 @@ import { onMounted, ref } from 'vue'
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import itemBox from '../assets/Item_Box_1.png'; // Adjust the path as necessary
-import "@maptiler/leaflet-maptilersdk";
+import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
+
+
 
 const coords = ref ([
     { lat: 57.71879084565982, lng: 11.949825156750219, points: 5, name: 'Tomaten' },
 ])
 
+  const bounds = L.latLngBounds(
+  [57.710393157301304, 11.932342624708077],  // southwest corner
+  [57.725522715594906, 11.976893505032336]   // northeast corner
+);
+
 onMounted(() => {
-  const map = L.map('map').setView([57.71775503989976, 11.951572858120244], 15);
+  const map = L.map('map', {
+    maxBounds: bounds,
+    maxBoundsViscosity: 1.0
+  }).setView([57.71775503989976, 11.951572858120244], 15);
 
-  //TODO add bounding box
-  // const bounds = L.latLngBounds(
-  //   [57.71775503989976, 11.951572858120244],
-  //   [57.71879084565982, 11.949825156750219]
-  // );
-  // map.fitBounds(bounds);
 
-  const styleId = '0197f435-45e9-72fe-8b4f-7fe12a6f99aa';
-
-  L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${import.meta.env.VITE_MAP_TILE_KEY}`, {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap contributors'
+  L.tileLayer(`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=${import.meta.env.VITE_MAP_TILE_KEY}`, {
+    maxZoom: 20,
+    //attribution: '© OpenStreetMap contributors'
   }).addTo(map);
 
-  // Create a MapTiler Layer inside Leaflet
-// const mtLayer = new L.maptiler.maptilerLayer({
-//   // Get your free API key at https://cloud.maptiler.com
-//   apiKey: import.meta.env.VITE_MAP_TILE_KEY,
-//   style: `https://api.maptiler.com/maps/0197f435-45e9-72fe-8b4f-7fe12a6f99aa/style.json?key=${import.meta.env.VITE_MAP_TILE_KEY}`,
-// }).addTo(map);
-
+//no zoom control
+  map.zoomControl.remove();
 
 //   const itemBoxIcon = L.icon({
 //   iconUrl: itemBox,
@@ -89,7 +87,7 @@ const startIcon = L.icon({
 
 </script>
 
-<style scoped>
+<style>
 #map {
   height: 100%;
   width: 100%;
@@ -97,6 +95,32 @@ const startIcon = L.icon({
   top: 0; left: 0; bottom: 0; right: 0;
   margin: 0;
   padding: 0;
+}
+
+#map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#map {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 0;
+}
+
+.map-style-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 10;
+  pointer-events: none;
+
+  /* 🌈 Retro look using CSS */
+  background: radial-gradient(circle at center, rgba(255, 140, 0, 0.1) 0%, rgba(255, 255, 255, 0) 70%),
+              rgba(245, 215, 161, 0.08); /* soft warm overlay */
+
+  mix-blend-mode: multiply; /* try 'multiply' or 'overlay' too */
+  filter: sepia(0.3) contrast(1.1) saturate(1.2);
 }
 
 
