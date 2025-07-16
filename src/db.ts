@@ -1,6 +1,5 @@
-import { set } from "firebase/database";
 import { db } from "./firebase.ts";
-import { collection, addDoc, getDocs, getDoc, setDoc, doc, arrayUnion, deleteDoc } from "firebase/firestore";
+import { getDoc, setDoc, doc, arrayUnion } from "firebase/firestore";
 
 
 export const saveUser = async (user: { name: string }) => {
@@ -55,14 +54,17 @@ export const updateDrinkPoints = async (user: { name: string, points: number }) 
     //update user points for drinks only
     //this is used when user drinks a drink and gets points for it
     const userRef = doc(db, "users", user.name);
-    let totalPoints = 0;
-    await setDoc(userRef, { points: user.points }, { merge: true });
     const userDoc = await getDoc(userRef);
-    if (userDoc.exists()) {
-        totalPoints = userDoc.data()?.points || 0;
+    if (!userDoc.exists()) {
+        console.warn("User not found:", user.name);
+        return 0;
     }
-    //return user points
-    return totalPoints;
+    const data = userDoc.data();
+    const currentPoints = data.points || 0;
+    const newPoints = currentPoints + user.points;
+    //update points in firestore
+    await setDoc(userRef, { points: newPoints }, { merge: true });
+    return newPoints;
 }
 
 export const getUser = async (userName: string) => {
