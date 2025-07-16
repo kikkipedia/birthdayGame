@@ -59,6 +59,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { saveUser } from '@/db'
 
 const userName = ref<string>('')
 const nameConfirmed = ref<boolean>(false)
@@ -84,9 +85,13 @@ onMounted(() => {
   }
 })
 
-const setName = () => {
+const setName = async () => {
   localStorage.setItem('userName', userName.value)
   nameConfirmed.value = true
+  //save user in db
+  const user = { name: userName.value }
+  await saveUser(user)
+  console.log('User saved:', user)
 }
 </script>
 

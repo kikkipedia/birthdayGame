@@ -34,8 +34,6 @@ const pointSystem = ref([
   { text: 'Öl', icon: 'mdi-beer' },
   { text: 'Vin', icon: 'mdi-glass-wine' },
   { text: 'Shot', icon: 'mdi-cup' },
-  // { text: 'Gösta tycker om att simma', icon: 'mdi-swim' },
-  // { text: 'Gösta är bra på matte', icon: 'mdi-numeric-1-box-multiple-outline' }
 ])
 </script>
 
