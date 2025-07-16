@@ -15,6 +15,11 @@
     <div class="score">
       <h3>Dina poäng: {{  }}</h3>
       <!--poängställning as dropdown-->
+      <v-btn class="seventies-button" @click="showScoreboard = !showScoreboard" color="#ff8c00">
+        Poängställning
+      </v-btn>
+      <v-list v-if="showScoreboard" class="seventies-list">
+        </v-list>
     </div>
 
 </template>
@@ -22,6 +27,8 @@
 <script setup lang="ts">
 import Map from '../components/Map.vue'
 import { onMounted, ref } from 'vue'
+
+const showScoreboard = ref(false)
 
 const pointSystem = ref([
   { text: 'Öl', icon: 'mdi-beer' },
@@ -61,5 +68,17 @@ const pointSystem = ref([
   text-align: left;
   margin-top: 20px;
   padding-left: 4px;
+}
+
+.seventies-chip {
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 #a0522d;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+}
+
+.seventies-chip:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #a0522d;
 }
 </style>

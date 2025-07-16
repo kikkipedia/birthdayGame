@@ -14,7 +14,13 @@ import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 
 
 const coords = ref ([
-    { lat: 57.71879084565982, lng: 11.949825156750219, points: 5, name: 'Tomaten' },
+    { lat: 57.71879084565982, lng: 11.949825156750219, points: 30, text: 'Välkommen till Göstaspelen, om du är klädd enligt klädkod (sportlagströja) får du ett försprång på ' },
+    { lat: 57.71783363289993, lng: 11.951663249102943, points: 10, text: 'Bär en sportdryck som en fackla över bron' },
+    { lat: 57.71740330446308, lng: 11.956686853572373, points: 15, text: 'Hitta på en uppvärmningsövning och få två personer att vara med ' },
+    { lat: 57.717263732973215, lng: 11.956079126693734, points: 20, text: 'Mima att du sjunger nationalsången innan ett lopp - filma och skicka till Gösta' },
+    // { lat: 57.72012345678901, lng: 11.953456789012345, points: 25, text: 'Hitta en plats att avsluta på' },
+    // { lat: 57.72123456789012, lng: 11.955678901234567, points: 15, text: 'Hitta en plats att vila på' },
+    // { lat: 57.72234567890123, lng: 11.957890123456789, points: 10, text: 'Hitta en plats att fira på' }
 ])
 
   const bounds = L.latLngBounds(
@@ -54,7 +60,7 @@ const itemBoxIcon = L.icon({
       <rect x="2" y="2" width="36" height="36" rx="6" ry="6"
             fill="#f5d7a1" stroke="#a0522d" stroke-width="3" filter="url(#shadow)"/>
       <text x="50%" y="55%" text-anchor="middle" font-size="20" fill="#5e3c2c"
-            font-family="Arial Rounded MT Bold">?</text>
+            font-family="Shrikhand">?</text>
     </svg>
   `),
   iconSize: [30, 30],
@@ -69,13 +75,13 @@ const startIcon = L.icon({
   popupAnchor: [0, -42]
 });
 
-  L.marker([57.718358378336845, 11.947729345680587], { icon: startIcon }).addTo(map)
-    .bindPopup('Start')
-    //.openPopup();
+//   L.marker([57.71879421165155, 11.949841127226291], { icon: startIcon }).addTo(map)
+//     .bindPopup('Start')
+//     //.openPopup();
 
     coords.value.forEach(coord => {
       L.marker([coord.lat, coord.lng], { icon: itemBoxIcon }).addTo(map)
-        .bindPopup(`${coord.name} - ${coord.points} p`);
+        .bindPopup(`${coord.text} - ${coord.points} p`);
     });
 
   // Wait for DOM layout to finish before fixing tile layout
@@ -123,5 +129,8 @@ const startIcon = L.icon({
   filter: sepia(0.3) contrast(1.1) saturate(1.2);
 }
 
+.leaflet-popup {
+  max-width: 250px;
+}
 
 </style>
