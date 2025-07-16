@@ -26,13 +26,16 @@
 </template>
 
 <script setup lang="ts">
-import { updateDrinkPoints } from '@/db'
+import { updateDrinkPoints, getUser } from '@/db'
 import Map from '../components/Map.vue'
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useCounterStore } from '@/stores/counter'
+
+const store = useCounterStore()
 
 const showScoreboard = ref(false)
 
-const totalPoints = ref(0)
+const totalPoints = computed(() => store.points)
 
 const pointSystem = ref([
   { text: 'Öl', icon: 'mdi-beer', points: 5 },
@@ -41,10 +44,18 @@ const pointSystem = ref([
 
 ])
 
+onMounted(async () => {
+  //fetch from db
+  const userName = localStorage.getItem("userName") || "";
+  if (userName) {
+    const total = await getUser(userName);
+    store.updatePoints(total && total.points ? total.points : 0);
+  }
+});
+
 const updatePoints = async (points: number) => {
   let total = await updateDrinkPoints({ name: localStorage.getItem("userName") || "", points });
-  totalPoints.value = total;
-  console.log(`Total poäng: ${totalPoints.value}`);
+  store.updatePoints(total);
 }
 </script>
 

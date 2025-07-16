@@ -11,10 +11,13 @@ import 'leaflet/dist/leaflet.css';
 import itemBox from '../assets/boxActive.png'; 
 import inactiveBox from '../assets/inActive.png'; 
 import { getUser, updateUserPoints } from '@/db'
+import { useCounterStore } from '@/stores/counter'
 
 //stores completed stops ids
 const completedStops = ref<number[]>([])
 const markerMap = new Map<number, L.Marker>();
+
+const store = useCounterStore()
 
 const coords = ref ([
     { id: 1, lat: 57.71879084565982, lng: 11.949825156750219, points: 30, text: 'Välkommen till Göstaspelen, om du är klädd enligt klädkod (sportlagströja) får du ett försprång på ' },
@@ -134,6 +137,8 @@ async function handleExerciseComplete(id: number) {
     points: stop.points,
     index: id,
   });
+  //update store
+  store.addPoints(stop.points);
 
   // ✅ Update marker icon
   const marker = markerMap.get(id);
