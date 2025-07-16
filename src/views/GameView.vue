@@ -4,6 +4,7 @@
       :key="i"
       class="ma-2 seventies-chip"
       text-color="white"
+      @click="updatePoints(item.points)"
     >
       <v-icon :icon="item.icon" class="mr-2"></v-icon>
       {{ item.text }}
@@ -13,7 +14,7 @@
     </div>
 
     <div class="score">
-      <h3>Dina poäng: {{  }}</h3>
+      <h3>Dina poäng: {{ totalPoints }}</h3>
       <!--poängställning as dropdown-->
       <v-btn class="seventies-button" @click="showScoreboard = !showScoreboard" color="#ff8c00">
         Poängställning
@@ -25,16 +26,26 @@
 </template>
 
 <script setup lang="ts">
+import { updateDrinkPoints } from '@/db'
 import Map from '../components/Map.vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const showScoreboard = ref(false)
 
+const totalPoints = ref(0)
+
 const pointSystem = ref([
-  { text: 'Öl', icon: 'mdi-beer' },
-  { text: 'Vin', icon: 'mdi-glass-wine' },
-  { text: 'Shot', icon: 'mdi-cup' },
+  { text: 'Öl', icon: 'mdi-beer', points: 5 },
+  { text: 'Vin', icon: 'mdi-glass-wine', points: 10 },
+  { text: 'Shot', icon: 'mdi-cup', points: 15 },
+
 ])
+
+const updatePoints = async (points: number) => {
+  let total = await updateDrinkPoints({ name: localStorage.getItem("userName") || "", points });
+  totalPoints.value = total;
+  console.log(`Total poäng: ${totalPoints.value}`);
+}
 </script>
 
 <style scoped>
