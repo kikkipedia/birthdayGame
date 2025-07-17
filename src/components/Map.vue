@@ -72,7 +72,16 @@ const randomTexts = [
     {text: 'Låtsas vara sportdrycks-sommelier – beskriv smaken dramatiskt, filma och skicka till Gösta', points: 20},
     {text: 'Fota en motståndare när den inte märker det – spionstil och skicka till Gösta', points: 20},
     {text: 'Stå helt still i 10 sekunder på en plats där du står i vägen', points: 15},
-    {text: 'Hitta på en hejaramsa för Göstaspelen - filma och skicka till Gösta', points: 20}
+    {text: 'Hitta på en hejaramsa för Göstaspelen - filma och skicka till Gösta', points: 20},
+    {text: 'Ta en bild där du ser “otroligt atletisk” ut, skicka till Gösta', points: 15},
+    {text: 'Ropa GÖSTA, GÖSTA, GÖÖÖSTA!!', points: 5},
+    {text: 'GRopa “Jag älskar Göstaspelen!” på valfri dialekt (inte din egen)', points: 10},
+    {text: 'Gör en superhjältepose - fota och skicka till Gösta', points: 15},
+    {text: 'Stretcha valfri kroppsdel som om du är elitgymnast', points: 10},
+    {text: 'Hoppa 5 gånger och viska “Gösta” varje gång du hoppar', points: 10},
+    {text: 'Fota dig själv med något gult och skicka till Gösta', points: 15,},
+    {text: 'Bjud Gösta på sportdryck', points: 10},
+    {text: 'Ta en selfie och skicka till Gösta', points: 10},
 ];
 
 
@@ -120,7 +129,7 @@ onMounted(async () => {
 })
 
 map.createPane('foregroundMarkers');
-map.getPane('foregroundMarkers')!.style.zIndex = '700'; // higher than default markers (400)
+map.getPane('foregroundMarkers')!.style.zIndex = '600'; // higher than default markers (400)
 
 L.marker([57.718763972084524, 11.95041058492349], {
   icon: L.divIcon({
@@ -177,7 +186,7 @@ function getRandomTasks(count: number) {
   return shuffled.slice(0, count);
 }
 
-const randomTasks = getRandomTasks(7);
+const randomTasks = getRandomTasks(6);
 const randomStops = generateRandomizedStops(bounds, randomTasks);
 
 // Add them to the coords array so everything works the same
@@ -260,7 +269,7 @@ coords.value.forEach((coord) => {
     coord.lat, coord.lng
   );
 
-  if (dist > 100) {
+  if (dist > 100000) {
     console.log(`Too far from point ${coord.id}: ${Math.round(dist)}m`);
     return; // don't open the popup
   }
