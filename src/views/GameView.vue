@@ -38,7 +38,7 @@ const showScoreboard = ref(false)
 const totalPoints = computed(() => store.points)
 
 const pointSystem = ref([
-  { text: 'Öl', icon: 'mdi-beer', points: 5 },
+  { text: 'Öl', icon: 'mdi-beer', points: 10 },
   { text: 'Vin', icon: 'mdi-glass-wine', points: 10 },
   { text: 'Shot', icon: 'mdi-cup', points: 15 },
 

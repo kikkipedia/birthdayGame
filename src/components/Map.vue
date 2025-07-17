@@ -45,7 +45,36 @@ const coords = ref ([
     { id: 22, lat: 57.719120347078395, lng: 11.94835692397954, points: 10, text: 'Slå en kullerbytta och låtsas att du just vunnit Göstaspelen'},
 ])
 
-//TODO add random coords, perhaps in db?
+
+//function to randomise coordinate between bounding box
+function generateRandomizedStops(bounds: L.LatLngBounds, taskList: { text: string, points: number }[], startId: number = 200) {
+  return taskList.map((task, index) => {
+    const lat = bounds.getSouthWest().lat + Math.random() * (bounds.getNorthEast().lat - bounds.getSouthWest().lat);
+    const lng = bounds.getSouthWest().lng + Math.random() * (bounds.getNorthEast().lng - bounds.getSouthWest().lng);
+    return {
+      id: startId + index,
+      lat,
+      lng,
+      text: task.text,
+      points: task.points
+    };
+  });
+}
+
+const randomTexts = [
+    {text: 'Förklara för Gösta att du inte är dopad (men är det)', points: 10},
+    {text: 'Ha ett plagg bak och fram – ta bild och skicka till Gösta', points: 15},
+    {text: 'Låtsas att du är skadad tills någon frågar om du är skadad', points: 15},
+    {text: 'Gör ett blindtest på två sportdrycker och gissa vilken som är vilken', points: 15},
+    {text: 'Drick sportdryck ur något annat än ett glas, flaska eller burk', points: 15},
+    {text: 'Skåla med Gösta', points: 5},
+    {text: 'Låt någon välja din nästa sportdryck åt dig - måste drickas för poäng', points: 15},
+    {text: 'Låtsas vara sportdrycks-sommelier – beskriv smaken dramatiskt, filma och skicka till Gösta', points: 20},
+    {text: 'Fota en motståndare när den inte märker det – spionstil och skicka till Gösta', points: 20},
+    {text: 'Stå helt still i 10 sekunder på en plats där du står i vägen', points: 15},
+    {text: 'Hitta på en hejaramsa för Göstaspelen - filma och skicka till Gösta', points: 20}
+];
+
 
   const bounds = L.latLngBounds(
   [57.710393157301304, 11.932342624708077],  // southwest corner
@@ -142,6 +171,17 @@ L.marker([57.71582311686606, 11.944953684013932], {
   }),
   pane: 'foregroundMarkers'
 }).addTo(map);
+
+function getRandomTasks(count: number) {
+  const shuffled = [...randomTexts].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
+const randomTasks = getRandomTasks(7);
+const randomStops = generateRandomizedStops(bounds, randomTasks);
+
+// Add them to the coords array so everything works the same
+coords.value.push(...randomStops);
 
 navigator.geolocation.watchPosition(
   (position) => {
