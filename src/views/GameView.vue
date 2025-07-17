@@ -20,29 +20,39 @@
         Poängställning
       </v-btn>
       <v-list v-if="showScoreboard" class="seventies-list">
-        </v-list>
+          <v-list-item v-for="(user, index) in scoreboard" :key="index">
+              <v-list-item-title>{{ user.name }}</v-list-item-title>
+              <v-list-item-subtitle>{{ user.points }}</v-list-item-subtitle>
+          </v-list-item>
+      </v-list>
     </div>
 
 </template>
 
 <script setup lang="ts">
-import { updateDrinkPoints, getUser } from '@/db'
+import { updateDrinkPoints, getUser, getAllUsers } from '@/db'
 import Map from '../components/Map.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useCounterStore } from '@/stores/counter'
 
-const store = useCounterStore()
+interface PointSystemItem {
+  text: string
+  icon: string
+  points: number
+}
 
-const showScoreboard = ref(false)
+interface User {
+  name: string
+  points: number
+}
 
-const totalPoints = computed(() => store.points)
 
-const pointSystem = ref([
+const pointSystem = ref<PointSystemItem[]>([
   { text: 'Öl', icon: 'mdi-beer', points: 10 },
   { text: 'Vin', icon: 'mdi-glass-wine', points: 10 },
   { text: 'Shot', icon: 'mdi-cup', points: 15 },
-
 ])
+const store = useCounterStore()
 
 onMounted(async () => {
   //fetch from db
@@ -53,10 +63,41 @@ onMounted(async () => {
   }
 });
 
-const updatePoints = async (points: number) => {
+
+const showScoreboard = ref<boolean>(false)
+const scoreboard = ref<User[]>([])
+
+const totalPoints = computed<number>(() => store.points)
+
+const updatePoints = async (points: number): Promise<void> => {
   let total = await updateDrinkPoints({ name: localStorage.getItem("userName") || "", points });
   store.updatePoints(total);
+  await loadScoreboard();
 }
+
+const loadScoreboard = async () => {
+  const users = await getAllUsers();
+  console.log("Loaded users:", users);
+
+  if (!users || users.length === 0) {
+    scoreboard.value = [];
+    return;
+  }
+
+  scoreboard.value = users
+    .map((user: any) => ({
+      name: user.id || user.name || 'Okänd',
+      points: user.points ?? 0
+    }))
+    .sort((a, b) => b.points - a.points);
+};
+
+// Load scoreboard when dropdown is shown
+watch(showScoreboard, async (val) => {
+  if (val) {
+    await loadScoreboard();
+  }
+});
 </script>
 
 <style scoped>

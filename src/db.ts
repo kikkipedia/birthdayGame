@@ -1,5 +1,5 @@
 import { db } from "./firebase.ts";
-import { getDoc, setDoc, doc, arrayUnion } from "firebase/firestore";
+import { getDoc, setDoc, doc, arrayUnion, collection, getDocs } from "firebase/firestore";
 
 
 export const saveUser = async (user: { name: string }) => {
@@ -78,3 +78,20 @@ export const getUser = async (userName: string) => {
         return null;
     }
 }
+
+export const getAllUsers = async () => {
+  const usersRef = collection(db, "users"); // ✅ Get the whole collection
+  const querySnapshot = await getDocs(usersRef);
+
+  if (querySnapshot.empty) {
+    console.log("No users found!");
+    return [];
+  }
+
+  const users = querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+
+  return users;
+};

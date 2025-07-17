@@ -269,7 +269,7 @@ coords.value.forEach((coord) => {
     coord.lat, coord.lng
   );
 
-  if (dist > 100000) {
+  if (dist > 100) {
     console.log(`Too far from point ${coord.id}: ${Math.round(dist)}m`);
     return; // don't open the popup
   }
