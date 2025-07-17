@@ -16,6 +16,7 @@ import { useCounterStore } from '@/stores/counter'
 //stores completed stops ids
 const completedStops = ref<number[]>([])
 const markerMap = new Map<number, L.Marker>();
+const userLocation = ref<[number, number] | null>(null);
 
 const store = useCounterStore()
 
@@ -51,6 +52,19 @@ const coords = ref ([
   [57.725522715594906, 11.976893505032336]   // northeast corner
 );
 
+function getDistanceMeters(lat1: number, lng1: number, lat2: number, lng2: number) {
+  const R = 6371000;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
 onMounted(async () => {
     // get already completed stops
     const user = await getUser(localStorage.getItem('userName') || '');
@@ -77,7 +91,7 @@ onMounted(async () => {
 })
 
 map.createPane('foregroundMarkers');
-map.getPane('foregroundMarkers')!.style.zIndex = '800'; // higher than default markers (400)
+map.getPane('foregroundMarkers')!.style.zIndex = '700'; // higher than default markers (400)
 
 L.marker([57.718763972084524, 11.95041058492349], {
   icon: L.divIcon({
@@ -129,6 +143,22 @@ L.marker([57.71582311686606, 11.944953684013932], {
   pane: 'foregroundMarkers'
 }).addTo(map);
 
+navigator.geolocation.watchPosition(
+  (position) => {
+    userLocation.value = [
+      position.coords.latitude,
+      position.coords.longitude
+    ];
+  },
+  (error) => {
+    console.warn("Location error:", error);
+  },
+  {
+    enableHighAccuracy: true,
+    maximumAge: 10000
+  }
+);
+
 
 coords.value.forEach((coord) => {
   const marker = L.marker([coord.lat, coord.lng], { icon: itemBoxIcon }).addTo(map);
@@ -179,7 +209,24 @@ coords.value.forEach((coord) => {
   </div>
 `;
 
-  marker.bindPopup(popupContent);
+  marker.on('click', () => {
+  if (!userLocation.value) {
+    console.warn("User location unknown.");
+    return;
+  }
+
+  const dist = getDistanceMeters(
+    userLocation.value[0], userLocation.value[1],
+    coord.lat, coord.lng
+  );
+
+  if (dist > 100) {
+    console.log(`Too far from point ${coord.id}: ${Math.round(dist)}m`);
+    return; // don't open the popup
+  }
+
+  marker.bindPopup(popupContent).openPopup(); // open it now!
+});
 });
 
 map.on('popupopen', (e) => {
@@ -245,6 +292,7 @@ async function handleExerciseComplete(id: number) {
   alert(`Du har klarat: "${stop.text}" (${stop.points} p)!`);
 }
 })
+
 
 </script>
 
