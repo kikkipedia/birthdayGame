@@ -24,19 +24,24 @@ const coords = ref ([
     { id: 2, lat: 57.71783363289993, lng: 11.951663249102943, points: 10, text: 'Bär en sportdryck som en fackla över bron' },
     { id: 3, lat: 57.71740330446308, lng: 11.956686853572373, points: 15, text: 'Hitta på en uppvärmningsövning och få två personer att vara med ' },
     { id: 4, lat: 57.717263732973215, lng: 11.956079126693734, points: 20, text: 'Mima att du sjunger nationalsången innan ett lopp - filma och skicka till Gösta' },
-    { id: 5, lat: 57.71668488273099, lng: 11.956543327695838, points: 30, text: 'Etapp 1 i Göstaspelen: Simning! Simma två längder i havsvattenbassängen med valfri simstil – crawl, bröstsim eller varför inte "kallsup och sparkflax"' },
-    { id: 6, lat: 57.7164846577691, lng: 11.956401707291576, points: 10, text: 'Hoppa från 3an' },
-    { id: 7, lat: 57.72234567890123, lng: 11.957890123456789, points: 15, text: 'Gör bomben - filma och skicka till Gösta' },
+    { id: 5, lat: 57.716167781052405, lng: 11.957109171417224, points: 30, text: 'Etapp 1 i Göstaspelen: Simning! Simma två längder i havsvattenbassängen med valfri simstil – crawl, bröstsim eller varför inte "kallsup och sparkflax"' },
+    { id: 6, lat: 57.716191143565425, lng: 11.95737040841577, points: 10, text: 'Hoppa från 3an' },
+    { id: 7, lat: 57.7163803793652, lng: 11.95749846376511, points: 15, text: 'Gör bomben - filma och skicka till Gösta' },
     { id: 8, lat: 57.717944049908205, lng: 11.955618629761169, points: 30, text: 'Etapp 2: Cykling! Nu är det dags att spänna vaderna och cykla till Myntgatan 9, se till att inte missa uppdragen på vägen för extrapoäng!' },
     { id: 9, lat: 57.71501990961798, lng: 11.950089539149097, points: 15, text: 'Ta en bild där du ser jättefokuserad ut på cykeln, skicka till Gösta' },
     { id: 10, lat: 57.712169736205205, lng: 11.948713307772458, points: 20, text: 'Filma en motspelare och var kommentator - skicka till Gösta' },
     { id: 11, lat: 57.71592053479544, lng: 11.944878581903014, points: 30, text: 'Etapp 3: Löpning! Snyggt jobbat, nu är det bara sista etappen kvar. Ta dig till torget genom att springa på valfritt sätt, det räcker att det ser ut som att du springer. Passa på att utföra uppdrag för extra poäng.'},
-    // TODO löpetappen med punkter
+    { id: 17, lat: 57.71607525684259, lng: 11.945318464409423, points: 10, text: 'Ta tio jättekliv (så långt du kan)'},
+    { id: 18, lat: 57.71659099223344, lng: 11.946176771222346, points: 10, text: 'Spring baklänges 10 meter' },
+    { id: 19, lat: 57.71701318563057, lng: 11.946873364517614, points: 10, text: 'Gör 5 knäböj och ropa "Heja Häcken!" efter varje' },
+    { id: 20, lat: 57.71756334305433, lng: 11.947100109405834, points: 10, text: 'Låtsas att du springer maraton och stanna och andas tungt dramatiskt' },
+    { id: 21, lat: 57.718746672214714, lng: 11.94716489365853, points: 10, text: 'Spring ett varv runt en lyktstolpe' },
     { id: 12, lat: 57.719370642041525, lng: 11.94778020667397, points: 20, text: 'MÅÅÅÅL!! Grattis, du har tagit dig igenom Göstaspelen 2025 med bravur, unna dig 20 poäng om du har genomfört alla etapper. Det finns fortfarande möjlighet att ta fler poäng fram till priscermonin som äger rum på Tullen klockan 20:00!'},
     { id: 13, lat: 57.719119295374576, lng: 11.947655419103349, points: 15, text: 'Ta en selfie där du ser svettig och nöjd ut, skicka till Gösta' },
     { id: 14, lat: 57.71906618655746, lng: 11.948159729864917, points: 15, text: 'Filma en målgest och skicka till Gösta' },
     { id: 15, lat: 57.7193569641506, lng: 11.947462632358066, points: 15, text: 'Ta en bild där du ser extremt oberörd ut efter att ha sprungit, skicka till Gösta' },
     { id: 16, lat: 57.71914205627235, lng: 11.947825890346696, points: 20, text: 'Gör en segerintervju som om du just vann Göstaspelen - filma och skicka till Gösta' },
+    { id: 22, lat: 57.719120347078395, lng: 11.94835692397954, points: 10, text: 'Slå en kullerbytta och låtsas att du just vunnit Göstaspelen'},
 ])
 
 //TODO add random coords, perhaps in db?
@@ -83,14 +88,42 @@ coords.value.forEach((coord) => {
     }
     // Store marker by ID
     markerMap.set(coord.id, marker);
-  const popupContent = `
-    <div>
-      <p>${coord.text} – <strong>${coord.points} p</strong></p>
-      <button class="complete-btn" data-id="${coord.id}">
-        ✅
-      </button>
+    const popupContent = `
+  <div style="font-family: 'Courier New', monospace; font-size: 14px;">
+    <p>${coord.text} – <strong>${coord.points} p</strong></p>
+    <div style="display: flex; justify-content: space-between; gap: 8px; margin-top: 8px;">
+      <button class="complete-btn" data-id="${coord.id}" style="
+        background-color: #b4c26c; /* avocado green */
+        color: #5e3c2c;
+        border: 2px solid #5e3c2c;
+        border-radius: 10px;
+        padding: 6px 10px;
+        font-weight: bold;
+        font-size: 14px;
+        font-family: 'Arial Rounded MT Bold', 'Courier', monospace;
+        box-shadow: 3px 3px 0 #5e3c2c;
+        cursor: pointer;
+        flex: 1;
+        transition: transform 0.1s ease;
+      ">✅ Klart</button>
+
+      <button class="reject-btn" data-id="${coord.id}" style="
+        background-color: #f5d7a1; /* mustard beige */
+        color: #a0522d;           /* sienna */
+        border: 2px solid #a0522d;
+        border-radius: 10px;
+        padding: 6px 10px;
+        font-weight: bold;
+        font-size: 14px;
+        font-family: 'Arial Rounded MT Bold', 'Courier', monospace;
+        box-shadow: 3px 3px 0 #a0522d;
+        cursor: pointer;
+        flex: 1;
+        transition: transform 0.1s ease;
+      ">❌ Hoppa</button>
     </div>
-  `;
+  </div>
+`;
 
   marker.bindPopup(popupContent);
 });
@@ -99,28 +132,33 @@ map.on('popupopen', (e) => {
   const popupEl = e.popup.getElement();
   if (!popupEl) return;
 
-  const button = popupEl.querySelector('.complete-btn') as HTMLButtonElement | null;
-  const idStr = button?.getAttribute('data-id');
-  if (!button || !idStr) return;
+  const completeBtn = popupEl.querySelector('.complete-btn') as HTMLButtonElement | null;
+  const rejectBtn = popupEl.querySelector('.reject-btn') as HTMLButtonElement | null;
+  const idStr = completeBtn?.getAttribute('data-id');
+  if (!completeBtn || !idStr) return;
 
   const id = parseInt(idStr);
-
   const isDone = completedStops.value.includes(id);
-  button.innerText = isDone ? '✅ Redan klar!' : '✅ Klart!';
-  button.style.cursor = isDone ? 'default' : 'pointer';
 
-  if (!isDone) {
-    button.addEventListener('click', () => {
-      handleExerciseComplete(id);
-
-      // Update UI in popup after marking done
-      button.innerText = 'Redan klar!';
-      button.style.backgroundColor = '#ccc';
-      button.style.cursor = 'default';
-      button.disabled = true;
-    }, { once: true });
+  if (isDone) {
+    completeBtn.innerText = '✅ Redan klar!';
+    completeBtn.disabled = true;
+    completeBtn.style.backgroundColor = '#ccc';
   } else {
-    button.disabled = true;
+    completeBtn.addEventListener('click', () => {
+      handleExerciseComplete(id);
+      completeBtn.innerText = '✅ Redan klar!';
+      completeBtn.disabled = true;
+      completeBtn.style.backgroundColor = '#ccc';
+    }, { once: true });
+  }
+
+  if (rejectBtn) {
+    rejectBtn.addEventListener('click', () => {
+      e.popup.remove(); // Close popup on reject
+      // Optionally handle rejections with a log or alert
+      console.log(`Stop ${id} was rejected.`);
+    });
   }
 });
 
