@@ -17,7 +17,7 @@
       <h3>Dina poäng: {{ totalPoints }}</h3>
       <!--poängställning as dropdown-->
       <v-btn class="seventies-button" @click="showScoreboard = !showScoreboard" color="#ff8c00">
-        Poängställning
+        Poängställning <v-icon>mdi-chevron-down</v-icon>
       </v-btn>
       <v-list v-if="showScoreboard" class="seventies-list">
           <v-list-item v-for="(user, index) in scoreboard" :key="index">
