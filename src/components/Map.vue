@@ -76,6 +76,60 @@ onMounted(async () => {
   iconAnchor: [24, 48],
 })
 
+map.createPane('foregroundMarkers');
+map.getPane('foregroundMarkers')!.style.zIndex = '800'; // higher than default markers (400)
+
+L.marker([57.718763972084524, 11.95041058492349], {
+  icon: L.divIcon({
+    className: 'emoji-icon',
+    html: '🏁',
+    iconSize: [60, 60],
+    iconAnchor: [30, 30]
+  }),
+  pane: 'foregroundMarkers'
+}).addTo(map);
+
+L.marker([57.7189092904705, 11.94785160689931], {
+  icon: L.divIcon({
+    className: 'emoji-icon',
+    html: '🎉',
+    iconSize: [60, 60],
+    iconAnchor: [30, 30]
+  }),
+  pane: 'foregroundMarkers'
+}).addTo(map);
+
+L.marker([57.71667409071471, 11.956286517443818], {
+  icon: L.divIcon({
+    className: 'emoji-icon',
+    html: '🏊‍♂️',
+    iconSize: [60, 60],
+    iconAnchor: [30, 30]
+  }),
+  pane: 'foregroundMarkers'
+}).addTo(map);
+
+L.marker([57.717951000588236, 11.955736250646568], {
+  icon: L.divIcon({
+    className: 'emoji-icon',
+    html: '🚴',
+    iconSize: [60, 60],
+    iconAnchor: [30, 30],
+  }),
+  pane: 'foregroundMarkers'
+}).addTo(map);
+
+L.marker([57.71582311686606, 11.944953684013932], {
+  icon: L.divIcon({
+    className: 'emoji-icon',
+    html: '🏃',
+    iconSize: [60, 60],
+    iconAnchor: [30, 30],
+  }),
+  pane: 'foregroundMarkers'
+}).addTo(map);
+
+
 coords.value.forEach((coord) => {
   const marker = L.marker([coord.lat, coord.lng], { icon: itemBoxIcon }).addTo(map);
   //if coords id is in completedStops, set marker to inactiveBox
@@ -141,13 +195,13 @@ map.on('popupopen', (e) => {
   const isDone = completedStops.value.includes(id);
 
   if (isDone) {
-    completeBtn.innerText = '✅ Redan klar!';
+    completeBtn.innerText = 'Redan klar!';
     completeBtn.disabled = true;
     completeBtn.style.backgroundColor = '#ccc';
   } else {
     completeBtn.addEventListener('click', () => {
       handleExerciseComplete(id);
-      completeBtn.innerText = '✅ Redan klar!';
+      completeBtn.innerText = 'Redan klar!';
       completeBtn.disabled = true;
       completeBtn.style.backgroundColor = '#ccc';
     }, { once: true });
@@ -242,4 +296,11 @@ async function handleExerciseComplete(id: number) {
     font-size: 14px;
 }
 
+.emoji-icon {
+  font-size: 48px;
+  line-height: 1;
+  text-align: center;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+  pointer-events: none; /* so it doesn't block clicks on other markers */
+}
 </style>
